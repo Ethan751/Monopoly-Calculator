@@ -1,0 +1,98 @@
+#Sympy importation
+import sympy
+
+
+#Importation of Sympy modules
+from sympy import symbols, diff, solve, Eq, simplify
+
+
+#Defining demand variable(y) and price variable(p)
+y, p = symbols('y p')
+
+
+#Input demand function
+demand_exp = input('Enter your demand function: ')
+
+
+#Input cost function to produce the product or service
+cost_exp = input('Enter your cost function: ')
+print(' ')
+
+
+#Take inverse of the demand function 
+#This is called the price function
+dem_func = simplify(demand_exp)
+demand_func = Eq(y,dem_func)
+price_func = solve(demand_func, p)
+
+
+#Multiply price function by y 
+#This is called the revenue function
+price_func_answer = price_func[0]
+rev_func = y*price_func_answer
+
+
+#Take derivative of the revenue function to find the marginal revenue
+marg_rev_func = diff(rev_func,y)
+
+
+#Take derivative of the cost function to find that marginal cost
+marg_cost_func = diff(cost_exp)
+
+
+#Set marginal cost and marginal revenue equal to eachother
+y_eq = Eq(marg_cost_func,marg_rev_func)
+
+
+#Solve for y
+#This is the value for optimal quantity demanded
+quantity = solve(y_eq,y)
+real_quantity = quantity[0]
+print(f'The quantity sold should be {real_quantity} units.')
+
+
+#Input quantity into original cost function
+#This gives the cost of production
+cost_func = Eq(dem_func,real_quantity)
+cost_value = solve(cost_func,p)
+cost = cost_value[0]
+print(f'The cost of the product or service should be ${cost}')
+
+
+#Multiply y(quantity) by p(price) to find revenue
+rev = cost*real_quantity
+
+
+#Multiply y(quantity) by the cost of production to find total cost
+simp_cost = simplify(cost_exp)
+total_cost = simp_cost.subs(y, real_quantity)
+
+
+#Subtract revenue from total cost to find the profit
+profit = rev-total_cost
+print(f'The profit is ${profit}.')
+
+# Sample problems:
+#
+#----------------------------------------------
+#  1
+#  Demand function: 216-12*p  (216-12p)
+#  Cost function: 4*y         (4y)
+#
+#  Expected Answer: y=84 p=11 profit=588
+#
+#----------------------------------------------
+#  2
+#  Demand function: 20-p
+#  Cost function: y**2     (y^2)
+#
+#  Expected Answer: y=5 p=15 profit=50
+#
+#----------------------------------------------
+#  3
+#  Demand function: 200-2*p       (200-2p)
+#  Cost function: y**2+10*y       (y^2+10y)
+#
+#  Expected Answer: y=30 p=85 profit=1350
+#
+#----------------------------------------------
